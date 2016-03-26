@@ -1,0 +1,8 @@
+defmodule AlfredTest do
+  use ExUnit.Case
+  doctest Alfred
+
+  test "the truth" do
+    assert 1 + 1 == 2
+  end
+end
