@@ -19,9 +19,10 @@ defmodule Alfred.Slack do
   end
 
   def handle_response(message, slack) do
-    %{room: room, sensor: sensor} = Alfred.ApiAi.Api.query(message.text)
-
-    send_message("#{sensor} in #{room}", message.channel, slack)
+    case Alfred.ApiAi.Api.query(message.text) do
+      %{room: room, sensor: sensor} -> send_message("#{sensor} in #{room}", message.channel, slack)
+      _rest -> nil
+    end
   end
 
 
