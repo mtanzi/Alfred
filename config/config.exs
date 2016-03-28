@@ -9,7 +9,17 @@ use Mix.Config
 # 3rd-party users, it should be done in your "mix.exs" file.
 
 config :alfred, :slack,
-    token: "SLACK-BOT-TOKEN"
+    token: System.get_env("SLACK_BOT_TOKEN")
+
+config :alfred, :api_ai,
+  access_token: System.get_env("API_AI_TOKEN"),
+  subscription_key: System.get_env("API_AI_KEY"),
+  base_url: "https://api.api.ai/v1",
+  listener_timeout: 20000
+
+config :exparticle, :api,
+  access_token: System.get_env("PARTICLE_TOKEN"),
+  device_id: System.get_env("PARTICLE_DEVICE")
 
 # You can configure for your application as:
 #
