@@ -14,7 +14,7 @@ defmodule Alfred.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :slack, :httpoison],
+    [applications: [:logger, :slack, :httpoison, :exparticle],
      mod: {Alfred, []}]
   end
 
@@ -31,6 +31,7 @@ defmodule Alfred.Mixfile do
     [{:slack, "~> 0.4.2"},
      {:httpoison, "~> 0.8.0"},
      {:poison, "~> 1.5"},
+     {:exparticle, "~> 0.0.2"},
      {:websocket_client, git: "https://github.com/jeremyong/websocket_client"}]
   end
 end

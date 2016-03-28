@@ -9,10 +9,5 @@ defmodule Alfred.ApiAi.Api do
     }
 
     post("/query?v=20150910", Poison.encode!(data))
-    |> handle_response
-  end
-
-  def handle_response(response = %{result: result = %{parameters: parameters}}) do
-    parameters
   end
 end

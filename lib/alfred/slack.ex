@@ -1,6 +1,8 @@
 defmodule Alfred.Slack do
   use Slack
 
+  alias Alfred.ApiAi.Api
+
   @token Application.get_env(:alfred, :slack)[:token]
 
   def start_link, do: start_link(@token, [])
@@ -14,14 +16,15 @@ defmodule Alfred.Slack do
     {:ok, state}
   end
 
-  def handle_response(message = %{text: "Hi alfred"}, slack) do
-    send_message("Hi Marco", message.channel, slack)
-  end
-
   def handle_response(message, slack) do
     case Alfred.ApiAi.Api.query(message.text) do
-      %{room: room, sensor: sensor} -> send_message("#{sensor} in #{room}", message.channel, slack)
-      _rest -> nil
+      %{result: %{parameters: %{room: room, sensor: sensor}}} ->
+        ExParticle.device_vars(Alfred.Particle.device_id, sensor)
+        |> Alfred.Particle.handle_response
+        |> send_message(message.channel, slack)
+      %{result: %{fulfillment: %{speech: reply}}} ->
+        send_message(reply, message.channel, slack)
+      response -> IO.inspect response
     end
   end
 
