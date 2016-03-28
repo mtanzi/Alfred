@@ -19,7 +19,7 @@ config :alfred, :api_ai,
 
 config :exparticle, :api,
   access_token: System.get_env("PARTICLE_TOKEN"),
-  device_id: System.get_env("PARTICLE_DEVICE")
+  device_id: System.get_env("PARTICLE_DEVICE_ID")
 
 # You can configure for your application as:
 #
