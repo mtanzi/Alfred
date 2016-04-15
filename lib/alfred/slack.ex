@@ -19,7 +19,7 @@ defmodule Alfred.Slack do
   def handle_response(message, slack) do
     case Alfred.ApiAi.Api.query(message.text) do
       %{result: %{parameters: %{room: room, sensor: sensor}}} ->
-        ExParticle.device_vars(Alfred.Particle.device_id, sensor)
+        ExParticle.device_vars(Alfred.Particle.device_id, Alfred.Particle.map_sensor(sensor))
         |> Alfred.Particle.handle_response
         |> send_message(message.channel, slack)
       %{result: %{fulfillment: %{speech: reply}}} ->

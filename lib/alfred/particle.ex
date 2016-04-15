@@ -8,6 +8,10 @@ defmodule Alfred.Particle do
     "data not available"
   end
 
+  def map_sensor("temperature"), do: "temperature"
+  def map_sensor("humidity"), do: "humidity"
+  def map_sensor("dust density"), do: "dust_density"
+
   def device_id do
     config = Application.get_env(:exparticle, :api)
     Dict.get(config, :device_id)
