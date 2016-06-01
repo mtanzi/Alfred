@@ -1,4 +1,13 @@
-defmodule Alfred.Particle do
+defmodule Alfred.Bots.Particle do
+  use Slack
+
+  @behaviour Alfred.Bot
+
+  def parse_message(%{result: %{parameters: %{room: room, sensor: sensor}}}, message, slack) do
+    ExParticle.device_vars(device_id, map_sensor(sensor))
+    |> handle_response
+    |> send_message(message.channel, slack)
+  end
 
   def handle_response(%ExParticle.Model.DeviceVariable{name: name, result: result}) do
     "the #{name} is #{result}"
@@ -16,5 +25,4 @@ defmodule Alfred.Particle do
     config = Application.get_env(:exparticle, :api)
     Dict.get(config, :device_id)
   end
-
 end
