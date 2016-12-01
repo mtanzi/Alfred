@@ -1,5 +1,11 @@
 use Mix.Config
 
+config :alfred, :bots,
+  list: [ %{"tfl" => Alfred.Bots.TFL},
+          %{"jenkins" => Alfred.Bots.Jenkins},
+          %{"particle" => Alfred.Bots.Particle},
+        ]
+
 config :alfred, :tfl,
   base_url: "https://api.tfl.gov.uk",
   app_id: System.get_env("TFL_APP_ID"),

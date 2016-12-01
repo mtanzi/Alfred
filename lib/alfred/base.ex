@@ -38,10 +38,8 @@ defmodule Alfred.Base do
   end
 
   def bots do
-    [ %{"tfl" => Alfred.Bots.TFL},
-      %{"jenkins" => Alfred.Bots.Jenkins},
-      %{"particle" => Alfred.Bots.Particle},
-    ]
+    Application.get_env(:alfred, :bots)
+    |> Dict.get(:list)
   end
 
   def parse_message(response, message, slack), do: Logger.info "response"
