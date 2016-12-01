@@ -1,4 +1,9 @@
 defmodule Alfred.Bots.Jenkins do
+  @moduledoc """
+    TODO: Bot still under development
+
+  """
+
   use Slack
 
   @behaviour Alfred.Bot

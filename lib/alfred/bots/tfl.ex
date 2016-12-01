@@ -1,9 +1,12 @@
 defmodule Alfred.Bots.TFL do
+  @moduledoc """
+    This bot use the TFL API to retrive the current underground situation
+  """
   use Slack
+  alias Alfred.Config
+  require Logger
 
   @behaviour Alfred.Bot
-
-  require Logger
 
   def parse_message(_resp, message, slack) do
     api_get
@@ -17,17 +20,6 @@ defmodule Alfred.Bots.TFL do
     |> Enum.join("\n")
   end
 
-  @moduledoc """
-  Provides general request making and handling functionality (for internal use).
-  """
-  alias Alfred.Config
-
-  # https://api.tfl.gov.uk/Line/Mode/tube/Status
-
-  @doc """
-  General HTTP `POST` request function. Takes a url part,
-  and optionally a token, data Map and list of params.
-  """
   def api_get do
     build_url
     |> HTTPoison.get!(%{})
@@ -52,7 +44,6 @@ defmodule Alfred.Bots.TFL do
     status = Map.get(h, :lineStatuses) |> List.first |> Map.get(:statusSeverityDescription)
     parse_response(t, [%{tube: tube, status: status} | acc])
   end
-
 
   defp build_url do
    "#{url}/Line/Mode/tube/Status?app_id=#{app_id}&app_key=#{app_key}"

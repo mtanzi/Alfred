@@ -1,4 +1,15 @@
 defmodule Alfred.Bots.Particle do
+  @moduledoc """
+    This bot use the Particle.io web API to  retrive the temperature the humidity
+    and the dust bensity mesured by the sensors connected to the device.
+    We access the Particle.io API using the module ExParticle
+
+    ex:
+    ```
+      ExParticle.device_vars(device_id, "temperature")
+    ```
+
+  """
   use Slack
 
   @behaviour Alfred.Bot

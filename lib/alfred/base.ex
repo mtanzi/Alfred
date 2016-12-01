@@ -1,4 +1,20 @@
 defmodule Alfred.Base do
+  @moduledoc """
+    Thge Base module receive the message coming from Slack and send it to Api.ai
+    to have a better understanding on which bot the user want to interact to.
+    When the response return from Api.ai the message will be adressed to the
+    correct bot, processed and sent back to Slack.
+
+    The list of bots available is defined inside the config file
+    ```
+      config :alfred, :bots,
+        list: [ %{"tfl" => Alfred.Bots.TFL},
+                %{"jenkins" => Alfred.Bots.Jenkins},
+                %{"particle" => Alfred.Bots.Particle},
+              ]
+    ```
+  """
+
   use Slack
   require Logger
 
