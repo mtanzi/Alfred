@@ -1,9 +1,9 @@
 use Mix.Config
 
 config :alfred, :bots,
-  list: [ %{"tfl" => Alfred.Bots.TFL},
-          %{"jenkins" => Alfred.Bots.Jenkins},
-          %{"particle" => Alfred.Bots.Particle},
+  list: [ Alfred.Bots.TFL,
+          Alfred.Bots.Jenkins,
+          Alfred.Bots.Particle,
         ]
 
 config :alfred, :tfl,

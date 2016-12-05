@@ -14,6 +14,8 @@ defmodule Alfred.Bots.Particle do
 
   @behaviour Alfred.Bot
 
+  def id, do: "particle"
+
   def parse_message(%{result: %{parameters: %{room: room, sensor: sensor}}}, message, slack) do
     ExParticle.device_vars(device_id, map_sensor(sensor))
     |> handle_response

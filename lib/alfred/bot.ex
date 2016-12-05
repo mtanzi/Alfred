@@ -15,5 +15,6 @@ defmodule Alfred.Bot do
     ```
   """
 
+  @callback id :: String.t
   @callback parse_message(Map.t, Map.t, Map.t) :: any
 end

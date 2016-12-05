@@ -8,9 +8,9 @@ defmodule Alfred.Base do
     The list of bots available is defined inside the config file
     ```
       config :alfred, :bots,
-        list: [ %{"tfl" => Alfred.Bots.TFL},
-                %{"jenkins" => Alfred.Bots.Jenkins},
-                %{"particle" => Alfred.Bots.Particle},
+        list: [ Alfred.Bots.TFL,
+                Alfred.Bots.Jenkins,
+                Alfred.Bots.Particle,
               ]
     ```
   """
@@ -42,14 +42,13 @@ defmodule Alfred.Base do
     parse_message(Alfred.ApiAi.Api.query(message.text), message, slack)
   end
 
-  def parse_message(%{result: %{parameters: %{bot: bot}}} = response, message, slack) do
+  def parse_message(%{result: %{parameters: %{bot: bot_id}}} = response, message, slack) do
     bots
-    |> Enum.find(fn(x) -> Map.get(x, bot) end)
-    |> Enum.each(fn({bot_id, bot}) -> call_bot(bot, response, message, slack) end)
+    |> Enum.find(fn(bot) -> bot.id == bot_id end)
+    |> call_bot(response, message, slack)
   end
 
   defp call_bot(bot, response, message, slack) do
-    IO.inspect bot
     spawn fn -> bot.parse_message(response, message, slack) end
   end
 

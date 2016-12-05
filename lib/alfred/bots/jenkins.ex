@@ -10,6 +10,8 @@ defmodule Alfred.Bots.Jenkins do
 
   require Logger
 
+  def id, do: "jenkins"
+
   def parse_message(%{result: %{parameters: %{clients: client}}}, message, slack) do
     if client != "" do
       res = api_post(client)

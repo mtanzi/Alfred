@@ -8,6 +8,8 @@ defmodule Alfred.Bots.TFL do
 
   @behaviour Alfred.Bot
 
+  def id, do: "tfl"
+
   def parse_message(_resp, message, slack) do
     api_get
     |> format_response

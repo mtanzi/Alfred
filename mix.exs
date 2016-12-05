@@ -22,6 +22,7 @@ defmodule Alfred.Mixfile do
      {:poison, "~> 1.5"},
      {:exparticle, "~> 0.0.2"},
      {:distillery, "~> 1.0.0"},
+     {:conform, "~>2.1.1"},
      {:websocket_client, git: "https://github.com/jeremyong/websocket_client"}]
   end
 end
