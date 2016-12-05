@@ -13,7 +13,7 @@ defmodule Alfred.Bots.Jenkins do
   def parse_message(%{result: %{parameters: %{clients: client}}}, message, slack) do
     if client != "" do
       res = api_post(client)
-      send_message("MESSAGE", message.channel, slack)
+      send_message(res.message, message.channel, slack)
     else
       send_message("The client does not exist.", message.channel, slack)
     end
@@ -21,40 +21,38 @@ defmodule Alfred.Bots.Jenkins do
 
   alias Alfred.Config
 
-  # curl -X POST http://euwest1-mgmt-core:8080/job/map_job_name(client)/build \
+  # curl -X POST http://euwest1-mgmt-core:8080/job/JOB_NAME/buildWithParameters?token=TOKEN \
   #   --user USER:PASSWORD \
   #   --form file0=@PATH_TO_FILE \
   #   --form json='{"parameter": [{"name":"FILE_LOCATION_AS_SET_IN_JENKINS", "file":"file0"}]}'
 
   def api_post(client) do
-    data = "{\"user\":\"#{user}:#{pass}\",\"form\":\"json='{\"parameters\":[]}'\"}"
-    HTTPoison.post!(url, [{:form, [json: "{\"parameters\":[]}"]}, {:user, "#{user}:#{pass}"}],  %{})
+    auth = [hackney: [basic_auth: {user, pass}]]
+    data = {:form, [json: (%{parameters: ""} |> Poison.encode!)]}
 
-    "/job/#{map_job_name(client)}/build"
-    |> do_post(data)
+    "/job/#{map_job_name(client)}/buildWithParameters?token=ninJakopcosFaksOzDoc"
+    |> do_post(data, [], auth)
   end
 
-  def do_post(url_part, data \\ "", params \\ []) do
-    IO.inspect "data: #{data}"
+  def do_post(url_part, data \\ "", params \\ [], options \\ []) do
 
     "#{url}:#{port}#{url_part}"
-    |> IO.inspect
-    |> HTTPoison.post!(data)
-    |> IO.inspect
+    |> HTTPoison.post!(data, params, options)
     |> handle_response
   end
 
-  def map_job_name("my_meds"), do: "STG_M3_MY_MEDS"
-  def map_job_name("aa_pharma"), do: "STG_M3_AA_PHARMA"
+  def map_job_name("my_meds"), do: "STG_M3_MYMEDS"
+  def map_job_name("aa_pharma"), do: "STG_M3_AAPHARMA"
   def map_job_name("mmm_pharma"), do: "STG_M3_MMM_PHARMA"
   def map_job_name("pfizer"), do: "STG_M3_PFIZER"
   def map_job_name("allergan"), do: "STG_M3_ALLERGAN"
 
   defp handle_response(%HTTPoison.Response{body: body, status_code: status_code}) do
-    response = Poison.decode!(body, keys: :atoms)
     case status_code do
-      200 -> response
-      _ -> IO.inspect response
+      201 ->
+        %{code: status_code, message: "Started deploy"}
+      _ ->
+        %{code: status_code, message: "Deploy didn't start."}
     end
   end
 
