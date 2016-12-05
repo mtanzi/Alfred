@@ -11,7 +11,8 @@ defmodule Alfred.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :slack, :httpoison, :exparticle],
+    [applications: [:logger, :slack, :httpoison, :exparticle,
+                    :websocket_client, :poison],
      mod: {Alfred, []}]
   end
 
@@ -20,6 +21,7 @@ defmodule Alfred.Mixfile do
      {:httpoison, "~> 0.8.0"},
      {:poison, "~> 1.5"},
      {:exparticle, "~> 0.0.2"},
+     {:distillery, "~> 1.0.0"},
      {:websocket_client, git: "https://github.com/jeremyong/websocket_client"}]
   end
 end
