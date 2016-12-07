@@ -14,8 +14,9 @@ defmodule Alfred.Bots.Jenkins do
 
   def parse_message(%{result: %{parameters: %{clients: client}}}, message, slack) do
     if client != "" do
+      user = slack.users[message.user].real_name
       res = api_post(client)
-      send_message(res.message, message.channel, slack)
+      send_message("#{user} #{res.message}", message.channel, slack)
     else
       send_message("The client does not exist.", message.channel, slack)
     end
