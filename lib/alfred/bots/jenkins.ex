@@ -49,6 +49,8 @@ defmodule Alfred.Bots.Jenkins do
   def map_job_name("mmm_pharma"), do: "STG_M3_MMM_PHARMA"
   def map_job_name("pfizer"), do: "STG_M3_PFIZER"
   def map_job_name("allergan"), do: "STG_M3_ALLERGAN"
+  def map_job_name("bayer"), do: "STG_M3_BAYER"
+  def map_job_name("bayerpsp"), do: "STG_M3_BAYERPSP"
 
   defp handle_response(%HTTPoison.Response{body: body, status_code: status_code}) do
     case status_code do
