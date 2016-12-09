@@ -42,7 +42,7 @@ defmodule Alfred.Base do
     parse_message(Alfred.ApiAi.Api.query(message.text), message, slack)
   end
 
-  def parse_message(%{result: %{parameters: %{bot: bot_id}}} = response, message, slack) do
+  def parse_message(%{result: %{parameters: %{bot: [bot_id]}}} = response, message, slack) do
     bots
     |> Enum.find(fn(bot) -> bot.id == bot_id end)
     |> call_bot(response, message, slack)
