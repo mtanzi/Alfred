@@ -33,7 +33,7 @@ defmodule Alfred.Bots.Jenkins do
     auth = [hackney: [basic_auth: {user, pass}]]
     data = {:form, [json: (%{parameters: ""} |> Poison.encode!)]}
 
-    "/job/#{map_job_name(client)}/buildWithParameters?token=ninJakopcosFaksOzDoc"
+    "/job/STG_M3_GENERIC/buildWithParameters?token=ninJakopcosFaksOzDoc&CLIENT=#{client}"
     |> do_post(data, [], auth)
   end
 
@@ -43,14 +43,6 @@ defmodule Alfred.Bots.Jenkins do
     |> HTTPoison.post!(data, params, options)
     |> handle_response
   end
-
-  def map_job_name("my_meds"), do: "STG_M3_MYMEDS"
-  def map_job_name("aa_pharma"), do: "STG_M3_AAPHARMA"
-  def map_job_name("mmm_pharma"), do: "STG_M3_MMM_PHARMA"
-  def map_job_name("pfizer"), do: "STG_M3_PFIZER"
-  def map_job_name("allergan"), do: "STG_M3_ALLERGAN"
-  def map_job_name("bayer"), do: "STG_M3_BAYER"
-  def map_job_name("bayerpsp"), do: "STG_M3_BAYERPSP"
 
   defp handle_response(%HTTPoison.Response{body: body, status_code: status_code}) do
     case status_code do
