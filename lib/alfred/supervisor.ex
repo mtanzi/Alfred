@@ -9,7 +9,7 @@ defmodule Alfred.Supervisor do
     token = Application.get_env(:alfred, :slack)[:token]
 
     children = [
-      worker(Alfred.Base, [token, []]),
+      worker(Alfred.Base, [token, []])
     ]
 
     supervise(children, strategy: :one_for_one)

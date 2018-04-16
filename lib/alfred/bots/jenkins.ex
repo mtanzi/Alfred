@@ -31,14 +31,13 @@ defmodule Alfred.Bots.Jenkins do
 
   def api_post(client) do
     auth = [hackney: [basic_auth: {user, pass}]]
-    data = {:form, [json: (%{parameters: ""} |> Poison.encode!)]}
+    data = {:form, [json: %{parameters: ""} |> Poison.encode!()]}
 
     "/job/STG_M3_GENERIC/buildWithParameters?token=ninJakopcosFaksOzDoc&CLIENT=#{client}"
     |> do_post(data, [], auth)
   end
 
   def do_post(url_part, data \\ "", params \\ [], options \\ []) do
-
     "#{url}:#{port}#{url_part}"
     |> HTTPoison.post!(data, params, options)
     |> handle_response
@@ -48,14 +47,16 @@ defmodule Alfred.Bots.Jenkins do
     case status_code do
       201 ->
         %{code: status_code, message: "Started deploy"}
+
       _ ->
         %{code: status_code, message: "Deploy didn't start."}
     end
   end
 
   defp build_url([part, []]) do
-   "#{url}:#{port}#{part}"
+    "#{url}:#{port}#{part}"
   end
+
   defp build_url([part, params]) do
     "#{url}:#{port}#{part}?#{params_join(params)}"
   end
@@ -63,17 +64,20 @@ defmodule Alfred.Bots.Jenkins do
   defp params_join(params) do
     params_join(params, "")
   end
+
   defp params_join([h | []], string) do
     [param, value] = h
     string <> "&#{param}=#{value}"
   end
+
   defp params_join([h | t], "") do
     [param | value] = h
     params_join(t, "#{param}=#{value}")
   end
+
   defp params_join([h | t], string) do
     [param | value] = h
-    params_join(t, string<>"&#{param}=#{value}")
+    params_join(t, string <> "&#{param}=#{value}")
   end
 
   defp url do

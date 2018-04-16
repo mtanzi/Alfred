@@ -18,7 +18,7 @@ defmodule Alfred.Bots.TFL do
 
   def format_response(response) do
     response
-    |> Enum.map(fn(res) -> "#{res.tube} - *#{res.status}*" end)
+    |> Enum.map(fn res -> "#{res.tube} - *#{res.status}*" end)
     |> Enum.join("\n")
   end
 
@@ -30,25 +30,30 @@ defmodule Alfred.Bots.TFL do
 
   defp handle_response(%HTTPoison.Response{body: body, status_code: status_code}) do
     response = Poison.decode!(body, keys: :atoms)
+
     case status_code do
       200 ->
         parse_response(response)
-      _ -> IO.inspect response
+
+      _ ->
+        IO.inspect(response)
     end
   end
 
   def parse_response(list) do
     parse_response(list, [])
   end
+
   def parse_response([], acc), do: acc
+
   def parse_response([h | t], acc) do
     tube = Map.get(h, :name)
-    status = Map.get(h, :lineStatuses) |> List.first |> Map.get(:statusSeverityDescription)
+    status = Map.get(h, :lineStatuses) |> List.first() |> Map.get(:statusSeverityDescription)
     parse_response(t, [%{tube: tube, status: status} | acc])
   end
 
   defp build_url do
-   "#{url}/Line/Mode/tube/Status?app_id=#{app_id}&app_key=#{app_key}"
+    "#{url}/Line/Mode/tube/Status?app_id=#{app_id}&app_key=#{app_key}"
   end
 
   defp url do

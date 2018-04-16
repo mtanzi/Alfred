@@ -44,12 +44,12 @@ defmodule Alfred.Base do
 
   def parse_message(%{result: %{parameters: %{bot: [bot_id]}}} = response, message, slack) do
     bots
-    |> Enum.find(fn(bot) -> bot.id == bot_id end)
+    |> Enum.find(fn bot -> bot.id == bot_id end)
     |> call_bot(response, message, slack)
   end
 
   defp call_bot(bot, response, message, slack) do
-    spawn fn -> bot.parse_message(response, message, slack) end
+    spawn(fn -> bot.parse_message(response, message, slack) end)
   end
 
   def bots do
@@ -57,5 +57,5 @@ defmodule Alfred.Base do
     |> Dict.get(:list)
   end
 
-  def parse_message(response, message, slack), do: Logger.info "response"
+  def parse_message(response, message, slack), do: Logger.info("response")
 end
